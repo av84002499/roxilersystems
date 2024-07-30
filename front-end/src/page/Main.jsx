@@ -3,11 +3,19 @@ import axios from 'axios';
 
 const App = () => {
   const [transactions, setTransactions] = useState([]);
+  const [statistics, setStatistics] = useState({});
+  const [barChartData, setBarChartData] = useState([]);
+  const [pieChartData, setPieChartData] = useState([]);
+  const [combinedData, setCombinedData] = useState({});
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     fetchTransactions(page);
+    fetchStatistics();
+    fetchBarChartData();
+    fetchPieChartData();
+    fetchCombinedData();
   }, [page]);
 
   const fetchTransactions = async (page) => {
@@ -17,6 +25,42 @@ const App = () => {
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error("Error fetching transactions:", error);
+    }
+  };
+
+  const fetchStatistics = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/transactions/statistics');
+      setStatistics(response.data);
+    } catch (error) {
+      console.error("Error fetching statistics:", error);
+    }
+  };
+
+  const fetchBarChartData = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/transactions/barchart');
+      setBarChartData(response.data);
+    } catch (error) {
+      console.error("Error fetching bar chart data:", error);
+    }
+  };
+
+  const fetchPieChartData = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/transactions/piechart');
+      setPieChartData(response.data);
+    } catch (error) {
+      console.error("Error fetching pie chart data:", error);
+    }
+  };
+
+  const fetchCombinedData = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/transactions/combined');
+      setCombinedData(response.data);
+    } catch (error) {
+      console.error("Error fetching combined data:", error);
     }
   };
 
@@ -76,6 +120,23 @@ const App = () => {
             <h4 className='page-action' onClick={handlePreviousPage} style={{ cursor: 'pointer' }}>Previous</h4>
             <h4 className='page-action' onClick={handleNextPage} style={{ cursor: 'pointer' }}>Next</h4>
             <h4 className='page-info'>Per Page : {/* Show per page info if needed */}</h4>
+          </div>
+          <hr />
+          <div className="statistics">
+            <h3>Statistics</h3>
+            {/* Render statistics data here */}
+            <pre>{JSON.stringify(statistics, null, 2)}</pre>
+          </div>
+          <div className="charts">
+            <h3>Bar Chart Data</h3>
+            {/* Render bar chart data here */}
+            <pre>{JSON.stringify(barChartData, null, 2)}</pre>
+            <h3>Pie Chart Data</h3>
+            {/* Render pie chart data here */}
+            <pre>{JSON.stringify(pieChartData, null, 2)}</pre>
+            <h3>Combined Data</h3>
+            {/* Render combined data here */}
+            <pre>{JSON.stringify(combinedData, null, 2)}</pre>
           </div>
         </div>
       </div>
