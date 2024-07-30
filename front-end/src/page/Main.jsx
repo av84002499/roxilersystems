@@ -30,7 +30,7 @@ const App = () => {
 
   const fetchStatistics = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/transactions/statistics');
+      const response = await axios.get('http://localhost:5000/api/transactions/statistics?month=2024-07');
       setStatistics(response.data);
     } catch (error) {
       console.error("Error fetching statistics:", error);
@@ -39,7 +39,7 @@ const App = () => {
 
   const fetchBarChartData = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/transactions/barchart');
+      const response = await axios.get('http://localhost:5000/api/transactions/barchart?month=2024-07');
       setBarChartData(response.data);
     } catch (error) {
       console.error("Error fetching bar chart data:", error);
